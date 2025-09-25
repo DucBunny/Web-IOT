@@ -1,15 +1,17 @@
-import './App.css'
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from './components/layouts/AppSidebar'
+import './App.scss'
+import { Main } from './components/layouts/Main'
+import { Sidebar } from './components/layouts/Sidebar'
 
 function App() {
-  return <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        <Outlet />
-      </main>
-    </SidebarProvider>
+  return (
+    <>
+      <div
+        className={`min-h-screen w-full bg-gray-900 text-gray-600 transition-all duration-500`}>
+        <Main />
+        <Sidebar />
+      </div>
+    </>
+  )
 }
 
-export default App 
+export default App

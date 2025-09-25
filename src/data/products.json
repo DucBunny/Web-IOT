@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Apple",
+    "price": 100000,
+    "img": "apple.png"
+  },
+  {
+    "id": 2,
+    "name": "Bell Pepper",
+    "price": 50000,
+    "img": "bell_pepper.png"
+  },
+  {
+    "id": 3,
+    "name": "Carrot",
+    "price": 20000,
+    "img": "carrot.png"
+  },
+  {
+    "id": 4,
+    "name": "Cucumber",
+    "price": 25000,
+    "img": "cucumber.png"
+  },
+  {
+    "id": 5,
+    "name": "Custard Apple",
+    "price": 60000,
+    "img": "custard_apple.png"
+  },
+  {
+    "id": 6,
+    "name": "Green Guava",
+    "price": 30000,
+    "img": "green_guava.png"
+  },
+  {
+    "id": 7,
+    "name": "Mango",
+    "price": 50000,
+    "img": "mango.png"
+  },
+  {
+    "id": 8,
+    "name": "Pear",
+    "price": 80000,
+    "img": "pear.png"
+  },
+  {
+    "id": 9,
+    "name": "Tomato",
+    "price": 30000,
+    "img": "tomato.png"
+  },
+  {
+    "id": 10,
+    "name": "Wax Apple",
+    "price": 35000,
+    "img": "wax_apple.png"
+  }
+]

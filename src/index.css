@@ -1,7 +1,7 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -117,4 +117,20 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@theme {
+  /* Colors palette */
+  --color-custom-primary: #4fd1c5;
+  --color-custom-primary-hover: #4cbeb5;
+  --color-custom-dark: #1f2733;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
