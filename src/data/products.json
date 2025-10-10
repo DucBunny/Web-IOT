@@ -1,61 +1,91 @@
 [
   {
     "id": 1,
-    "name": "Apple",
+    "name": {
+      "en": "Apple",
+      "vi": "Táo"
+    },
     "price": 100000,
     "img": "apple.png"
   },
   {
     "id": 2,
-    "name": "Bell Pepper",
+    "name": {
+      "en": "Bell Pepper",
+      "vi": "Ớt chuông"
+    },
     "price": 50000,
     "img": "bell_pepper.png"
   },
   {
     "id": 3,
-    "name": "Carrot",
+    "name": {
+      "en": "Carrot",
+      "vi": "Cà rốt"
+    },
     "price": 20000,
     "img": "carrot.png"
   },
   {
     "id": 4,
-    "name": "Cucumber",
+    "name": {
+      "en": "Cucumber",
+      "vi": "Dưa leo"
+    },
     "price": 25000,
     "img": "cucumber.png"
   },
   {
     "id": 5,
-    "name": "Custard Apple",
+    "name": {
+      "en": "Custard Apple",
+      "vi": "Na"
+    },
     "price": 60000,
     "img": "custard_apple.png"
   },
   {
     "id": 6,
-    "name": "Green Guava",
+    "name": {
+      "en": "Green Guava",
+      "vi": "Ổi xanh"
+    },
     "price": 30000,
     "img": "green_guava.png"
   },
   {
     "id": 7,
-    "name": "Mango",
+    "name": {
+      "en": "Mango",
+      "vi": "Xoài"
+    },
     "price": 50000,
     "img": "mango.png"
   },
   {
     "id": 8,
-    "name": "Pear",
+    "name": {
+      "en": "Pear",
+      "vi": "Lê"
+    },
     "price": 80000,
     "img": "pear.png"
   },
   {
     "id": 9,
-    "name": "Tomato",
+    "name": {
+      "en": "Tomato",
+      "vi": "Cà chua"
+    },
     "price": 30000,
     "img": "tomato.png"
   },
   {
     "id": 10,
-    "name": "Wax Apple",
+    "name": {
+      "en": "Wax Apple",
+      "vi": "Roi"
+    },
     "price": 35000,
     "img": "wax_apple.png"
   }

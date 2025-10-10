@@ -2,8 +2,10 @@ import { CircleCheckBig } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router'
 import { toast, Toaster } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 export const Main = () => {
+  const { t } = useTranslation()
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem('cart')
     return saved ? JSON.parse(saved) : []
@@ -27,7 +29,8 @@ export const Main = () => {
       }
     })
 
-    toast.success('Product added to cart!', {
+    /* Show success notification */
+    toast.success(t('Product added to cart!'), {
       icon: <CircleCheckBig />,
       duration: 3000,
       position: 'top-center',
@@ -43,24 +46,6 @@ export const Main = () => {
     setCart((prev) => prev.filter((item) => item.id !== id))
   }
 
-  const addWeight = (id) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, weight: item.weight + 1 } : item
-      )
-    )
-  }
-
-  const minusWeight = (id) => {
-    setCart((prev) =>
-      prev
-        .map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0)
-    )
-  }
-
   return (
     <div className="fixed top-2 right-2 bottom-2 left-30 rounded-2xl border bg-gray-100 p-4">
       <Toaster />
@@ -68,9 +53,7 @@ export const Main = () => {
         context={{
           cart,
           addToCart,
-          removeFromCart,
-          addWeight,
-          minusWeight
+          removeFromCart
         }}
       />
     </div>

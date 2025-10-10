@@ -3,7 +3,7 @@ import { getImage } from '../utils/get-image'
 import { useOutletContext } from 'react-router'
 import { useTranslation } from 'react-i18next'
 
-export const Cart = () => {
+export const History = () => {
   const { cart, removeFromCart } = useOutletContext()
   const { t, i18n } = useTranslation()
 
