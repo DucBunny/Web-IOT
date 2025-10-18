@@ -10,12 +10,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       total_amount: {
-        type: Sequelize.DECIMAL(12, 2),
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       status: {
         type: Sequelize.STRING(50),
         allowNull: true
+      },
+      checkout_at: {
+        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: null
       },
       created_at: {
         allowNull: false,

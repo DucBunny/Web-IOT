@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       total_amount: { type: DataTypes.DECIMAL(12, 2), allowNull: false },
       status: { type: DataTypes.STRING(50), allowNull: true },
+      checkout_at: { type: DataTypes.DATE, allowNull: true },
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
