@@ -17,6 +17,7 @@ import {
 import { useOutletContext } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { fetchListProductsAPI } from '../api/products'
+import SpiralLoader from '../components/ui/spiral-loader'
 
 export const Home = () => {
   const { t, i18n } = useTranslation()
@@ -74,8 +75,19 @@ export const Home = () => {
     })
   }, [products, search, i18n.language])
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
+  if (isLoading)
+    return (
+      <div className="flex h-full items-center justify-center">
+        <SpiralLoader />
+      </div>
+    )
+
+  if (error)
+    return (
+      <div className="flex h-full items-center justify-center text-3xl font-bold text-gray-500">
+        Error: {error}!
+      </div>
+    )
 
   return (
     <div className="relative h-full w-full">
