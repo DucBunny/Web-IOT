@@ -1,6 +1,5 @@
 import { Plus, ScanLine, Search } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import products from '../data/products.json'
+import { useEffect, useMemo, useState } from 'react'
 import { getImage } from '../utils/get-image'
 import {
   Tooltip,
@@ -17,23 +16,66 @@ import {
 } from '@/components/ui/dialog'
 import { useOutletContext } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { fetchListProductsAPI } from '../api/products'
 
 export const Home = () => {
   const { t, i18n } = useTranslation()
   const { addToCart } = useOutletContext()
   const [now, setNow] = useState(new Date())
   const [search, setSearch] = useState('')
+  const [products, setProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
+  // Fetch products on mount
+  useEffect(() => {
+    const controller = new AbortController()
+    let mounted = true
+
+    const load = async () => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const data = await fetchListProductsAPI({ signal: controller.signal })
+        if (mounted) setProducts(Array.isArray(data) ? data : [])
+      } catch (err) {
+        if (err.name !== 'AbortError') setError(err.message || 'Failed to load')
+      } finally {
+        if (mounted) setIsLoading(false)
+      }
+    }
+
+    load()
+    return () => {
+      mounted = false
+      controller.abort()
+    }
+  }, [])
+
+  // Update current time every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(new Date())
     }, 30000)
+
     return () => clearInterval(interval)
   }, [])
 
-  const filteredProducts = products.filter((product) =>
-    product.name[i18n.language]?.toLowerCase().includes(search.toLowerCase())
-  )
+  // Filter products based on search query
+  const filteredProducts = useMemo(() => {
+    const list = Array.isArray(products) ? products : []
+    const q = search.trim().toLowerCase()
+
+    if (!q) return list
+
+    return list.filter((p) => {
+      const name = i18n.language === 'vi' ? p.name_vi : p.name_en
+      return name?.toLowerCase().includes(q)
+    })
+  }, [products, search, i18n.language])
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div className="relative h-full w-full">
@@ -84,23 +126,23 @@ export const Home = () => {
           </Dialog>
         </div>
 
-        <div className="scrollbar-hide mt-4 grid max-h-full grid-cols-5 gap-4 overflow-y-auto py-0.5">
+        <div className="scrollbar-hide mt-4 grid max-h-full grid-cols-2 gap-4 overflow-y-auto py-0.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {filteredProducts.map((product) => (
             <div
               key={product.id}
               className="col-span-1 flex flex-col justify-between rounded-xl bg-white shadow">
               <img
-                src={getImage(product.img)}
-                alt={product.name}
+                src={getImage(product.img_url)}
+                alt={product?.[`name_${i18n.language}`]}
                 className="w-full rounded-t-xl object-cover"
               />
-              <div className="flex items-center justify-between px-3 pb-2">
+              <div className="flex items-end justify-between px-3 pb-2">
                 <div>
                   <div className="font-semibold">
-                    {product.name[i18n.language]}
+                    {product?.[`name_${i18n.language}`]}
                   </div>
                   <div className="text-sm">
-                    {product.price.toLocaleString('vi-VN')} {t('VNĐ')}
+                    {product.price_per_kg.toLocaleString('vi-VN')} {t('VNĐ')}
                   </div>
                 </div>
                 <Tooltip>

@@ -13,5 +13,9 @@
   "Scan your fruit": "Scan your fruit",
   "Add to cart": "Add to cart",
   "Product added to cart!": "Product added to cart!",
-  "VNĐ": "VND"
+  "VNĐ": "VND",
+  "Failed to add to cart": "Failed to add to cart",
+  "Failed to remove item from cart": "Failed to remove item from cart",
+  "Order placed!": "Order placed!",
+  "Failed to place order": "Failed to place order"
 }

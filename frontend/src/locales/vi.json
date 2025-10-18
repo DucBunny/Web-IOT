@@ -13,5 +13,9 @@
   "Scan your fruit": "Quét sản phẩm của bạn",
   "Add to cart": "Thêm vào giỏ hàng",
   "Product added to cart!": "Sản phẩm đã được thêm vào giỏ hàng!",
-  "VNĐ": "VNĐ"
+  "VNĐ": "VNĐ",
+  "Failed to add to cart": "Thêm vào giỏ hàng thất bại",
+  "Failed to remove item from cart": "Xóa sản phẩm khỏi giỏ hàng thất bại",
+  "Order placed!": "Đặt hàng thành công!",
+  "Failed to place order": "Đặt hàng thất bại"
 }

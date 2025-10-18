@@ -3,9 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import { Cart } from './components/Cart'
-import { Home } from './components/Home'
-import { History } from './components/History'
+import { Cart } from './pages/Cart'
+import { Home } from './pages/Home'
 import './i18n'
 
 const router = createBrowserRouter([
@@ -20,10 +19,6 @@ const router = createBrowserRouter([
       {
         path: '/cart',
         Component: Cart
-      },
-      {
-        path: '/history',
-        Component: History
       }
     ]
   }
