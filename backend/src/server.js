@@ -1,8 +1,8 @@
-const express = require('express')
-const cors = require('cors')
-require('dotenv').config({ quiet: true })
-const router = require('./routes/api')
-const { connectDB } = require('./config/db')
+import express from 'express'
+import cors from 'cors'
+import 'dotenv/config'
+import router from './routes/api.js'
+import { connectDB } from './config/db.js'
 
 const port = process.env.PORT || 8080
 const app = express()
