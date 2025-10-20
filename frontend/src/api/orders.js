@@ -30,11 +30,17 @@ async function updateOrderStatusAPI(orderId, statusData) {
   return res.data
 }
 
+async function fetchLatestPendingOrderAPI() {
+  const res = await api.get('/orders/pending/latest')
+  return res.data
+}
+
 export {
   createOrderAPI,
   fetchListOrdersAPI,
   fetchOrderDetailsAPI,
   addOrUpdateItemAPI,
   removeItemAPI,
-  updateOrderStatusAPI
+  updateOrderStatusAPI,
+  fetchLatestPendingOrderAPI
 }

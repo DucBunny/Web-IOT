@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router'
 import { toast, Toaster } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import {
   createOrderAPI,
-  addOrUpdateItemAPI,
   updateOrderStatusAPI,
   removeItemAPI,
-  fetchOrderDetailsAPI
+  fetchOrderDetailsAPI,
+  fetchLatestPendingOrderAPI
 } from '../../api/orders'
+import * as mqttAPI from '../../api/mqtt'
 
 export const Main = () => {
   const { t } = useTranslation()
@@ -18,47 +19,60 @@ export const Main = () => {
   })
 
   useEffect(() => {
-    localStorage.setItem('orderId', JSON.stringify(orderId))
-  }, [orderId])
-
-  const orderIdRef = useRef(orderId)
-  useEffect(() => {
-    orderIdRef.current = orderId
-  }, [orderId])
-
-  const creatingRef = useRef(null)
-
-  const ensureCartExists = useCallback(async () => {
-    if (orderIdRef.current) return orderIdRef.current
-
-    if (!creatingRef.current) {
-      creatingRef.current = (async () => {
-        const created = await createOrderAPI()
-        orderIdRef.current = created.id
-        setOrderId(created.id)
-        return created.id
-      })().finally(() => {
-        creatingRef.current = null
-      })
+    async function fetchData() {
+      try {
+        const data = await fetchLatestPendingOrderAPI()
+        if (data?.id) {
+          setOrderId(data.id)
+          localStorage.setItem('orderId', JSON.stringify(data.id))
+        }
+      } catch (err) {
+        console.error('Failed to fetch latest pending order:', err)
+      }
     }
+    fetchData()
+  }, [orderId])
 
-    return creatingRef.current
-  }, [])
+  // const orderIdRef = useRef(orderId)
+  // useEffect(() => {
+  //   orderIdRef.current = orderId
+  // }, [orderId])
+
+  // const creatingRef = useRef(null)
+
+  // const ensureCartExists = useCallback(async () => {
+  //   if (orderIdRef.current) return orderIdRef.current
+
+  //   if (!creatingRef.current) {
+  //     creatingRef.current = (async () => {
+  //       const created = await createOrderAPI()
+  //       orderIdRef.current = created.id
+  //       setOrderId(created.id)
+  //       return created.id
+  //     })().finally(() => {
+  //       creatingRef.current = null
+  //     })
+  //   }
+
+  //   return creatingRef.current
+  // }, [])
 
   const addToCart = async (product) => {
     try {
-      const orderId = await ensureCartExists()
-      await addOrUpdateItemAPI(orderId, {
-        product_id: product.id,
-        quantity_gram: 100,
-        price_per_kg_at_purchase: product.price_per_kg
+      // const orderId = await ensureCartExists()
+      // await addOrUpdateItemAPI(orderId, {
+      //   product_id: product.id,
+      //   quantity_gram: 100,
+      //   price_per_kg_at_purchase: product.price_per_kg
+      // })
+      await mqttAPI.publishMqttScale(product.id, {
+        timeout: import.meta.env.VITE_MQTT_TTL_SCALE + 2000
       })
+      toast.success(t('Product added to cart!'))
     } catch (err) {
       console.error(err)
       toast.error(t('Failed to add to cart'))
     }
-
-    toast.success(t('Product added to cart!'))
   }
 
   const removeFromCart = async (productId) => {
@@ -93,16 +107,32 @@ export const Main = () => {
     }
   }
 
+  const detect = async () => {
+    try {
+      await mqttAPI.publishMqttDetect(
+        {},
+        {
+          timeout: import.meta.env.VITE_MQTT_TTL_DETECT + 2000
+        }
+      )
+      toast.success(t('Product added to cart!'))
+    } catch (err) {
+      console.error(err)
+      toast.error(t('Failed to add to cart'))
+    }
+  }
+
   return (
     <div className="fixed top-2 right-2 bottom-2 left-30 rounded-2xl border bg-gray-100 p-4">
       <Toaster position="top-center" richColors duration={1500} />
       <Outlet
         context={{
           orderId,
-          ensureCartExists,
+          // ensureCartExists,
           addToCart,
           removeFromCart,
-          checkout
+          checkout,
+          detect
         }}
       />
     </div>

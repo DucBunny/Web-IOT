@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
@@ -21,7 +22,7 @@ import SpiralLoader from '../components/ui/spiral-loader'
 
 export const Home = () => {
   const { t, i18n } = useTranslation()
-  const { addToCart } = useOutletContext()
+  const { addToCart, detect } = useOutletContext()
   const [now, setNow] = useState(new Date())
   const [search, setSearch] = useState('')
   const [products, setProducts] = useState([])
@@ -134,6 +135,18 @@ export const Home = () => {
                 <DialogDescription>Quét bằng camera cảm biến</DialogDescription>
               </DialogHeader>
               <div className="h-60 w-full rounded-lg border bg-black"></div>
+              <DialogFooter>
+                <Tooltip>
+                  <TooltipTrigger
+                    className="bg-custom-primary hover:bg-custom-primary-hover w-1/2 cursor-pointer rounded-md p-2 text-white"
+                    onClick={() => detect()}>
+                    Scan
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t('Add to cart')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
