@@ -5,6 +5,7 @@ import {
   getListOrdersService,
   getOrderService,
   updateStatusOrderService,
+  getOrCreatePendingOrderService,
   ServiceError
 } from '../services/orderService.js'
 import { StatusCodes } from 'http-status-codes'
@@ -84,11 +85,24 @@ async function updateStatus(req, res) {
   }
 }
 
+async function getLatestPendingOrder(req, res) {
+  try {
+    const order = await getOrCreatePendingOrderService()
+    return res.status(StatusCodes.OK).json(order)
+  } catch (err) {
+    console.error(err)
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Failed to get latest pending order' })
+  }
+}
+
 export const orderController = {
   createOrder,
   addOrUpdateItem,
   removeItem,
   getListOrders,
   getOrder,
-  updateStatus
+  updateStatus,
+  getLatestPendingOrder
 }

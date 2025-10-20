@@ -39,7 +39,7 @@ async function getOrderService(orderId) {
 
 async function addOrUpdateItemService(
   orderId,
-  { product_id, quantity_gram, price_per_kg_at_purchase } = {}
+  { product_id, quantity_gram } = {}
 ) {
   validateQuantity(quantity_gram)
   const t = await sequelize.transaction()
@@ -50,13 +50,13 @@ async function addOrUpdateItemService(
 
     // Find existing item
     const existing = await repo.findOrderItem(orderId, product_id, t)
-    const price =
-      price_per_kg_at_purchase != null
-        ? price_per_kg_at_purchase
-        : product.price_per_kg
 
     if (existing) {
       const newQuantity = existing.quantity_gram + quantity_gram
+      const price =
+        existing.price_per_kg_at_purchase != null
+          ? existing.price_per_kg_at_purchase
+          : product.price_per_kg
       await repo.updateOrderItem(
         existing.id,
         {
@@ -72,8 +72,8 @@ async function addOrUpdateItemService(
           order_id: orderId,
           product_id,
           quantity_gram,
-          price_per_kg_at_purchase: price,
-          subtotal: (price * quantity_gram) / 1000
+          price_per_kg_at_purchase: product.price_per_kg,
+          subtotal: (product.price_per_kg * quantity_gram) / 1000
         },
         t
       )
@@ -92,13 +92,13 @@ async function addOrUpdateItemService(
   }
 }
 
-async function removeItemService(cartId, productId) {
+async function removeItemService(orderId, productId) {
   const t = await sequelize.transaction()
   try {
-    await repo.deleteOrderItem(cartId, productId, t)
-    await repo.recalcTotal(cartId, t)
+    await repo.deleteOrderItem(orderId, productId, t)
+    await repo.recalcTotal(orderId, t)
     await t.commit()
-    return repo.findOrderById(cartId)
+    return repo.findOrderById(orderId)
   } catch (err) {
     await t.rollback()
     throw new ServiceError(
@@ -127,6 +127,12 @@ async function updateStatusOrderService(orderId, status) {
   }
 }
 
+async function getOrCreatePendingOrderService() {
+  const existing = await repo.findLatestOrderPending()
+  if (existing) return existing
+  return createOrderService()
+}
+
 export {
   ServiceError,
   createOrderService,
@@ -134,5 +140,6 @@ export {
   removeItemService,
   getListOrdersService,
   getOrderService,
-  updateStatusOrderService
+  updateStatusOrderService,
+  getOrCreatePendingOrderService
 }

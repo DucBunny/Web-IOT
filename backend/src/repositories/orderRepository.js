@@ -32,6 +32,20 @@ async function listOrders() {
   })
 }
 
+async function findLatestOrderPending() {
+  return Order.findOne({
+    where: { status: 'pending' },
+    order: [['created_at', 'DESC']],
+    include: [
+      {
+        model: OrderItem,
+        as: 'orderItems',
+        include: [{ model: Product, as: 'product' }]
+      }
+    ]
+  })
+}
+
 async function findOrderItem(orderId, productId, transaction) {
   return OrderItem.findOne({
     where: { order_id: orderId, product_id: productId },
@@ -85,6 +99,7 @@ export {
   createOrder,
   findOrderById,
   listOrders,
+  findLatestOrderPending,
   findOrderItem,
   createOrderItem,
   updateOrderItem,
