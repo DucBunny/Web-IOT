@@ -46,11 +46,15 @@ async function publishScale(req, res) {
       attributes: ['name_en']
     })
 
+    messages[1].fruit_name = product?.name_en
+
     const received = await subscribeOneShot({
       fruitName: product?.name_en,
       messages: [messages[1]],
       ttl_ms: Number(process.env.MQTT_TTL_SCALE || 15000)
     })
+
+    messages[1].fruit_name = null
 
     return res.status(StatusCodes.OK).json({ received: received, product_id })
   } catch (err) {
