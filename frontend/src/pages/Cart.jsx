@@ -20,17 +20,9 @@ export const Cart = () => {
       setIsLoading(true)
       setError(null)
       try {
-        // const id = orderId ?? (await ensureCartExists())
         const data = await fetchOrderDetailsAPI(orderId)
         setApiData(data)
       } catch (err) {
-        // if (err.status === 404) {
-        //   localStorage.removeItem('orderId')
-        // const id = await ensureCartExists()
-        //   const data = await fetchOrderDetailsAPI(id)
-        //   setApiData(data)
-        //   return
-        // }
         if (err.name !== 'AbortError') setError(err.message || 'Failed to load')
       } finally {
         setIsLoading(false)

@@ -33,39 +33,9 @@ export const Main = () => {
     fetchData()
   }, [orderId])
 
-  // const orderIdRef = useRef(orderId)
-  // useEffect(() => {
-  //   orderIdRef.current = orderId
-  // }, [orderId])
-
-  // const creatingRef = useRef(null)
-
-  // const ensureCartExists = useCallback(async () => {
-  //   if (orderIdRef.current) return orderIdRef.current
-
-  //   if (!creatingRef.current) {
-  //     creatingRef.current = (async () => {
-  //       const created = await createOrderAPI()
-  //       orderIdRef.current = created.id
-  //       setOrderId(created.id)
-  //       return created.id
-  //     })().finally(() => {
-  //       creatingRef.current = null
-  //     })
-  //   }
-
-  //   return creatingRef.current
-  // }, [])
-
-  const addToCart = async (product) => {
+  const addToCart = async (productId) => {
     try {
-      // const orderId = await ensureCartExists()
-      // await addOrUpdateItemAPI(orderId, {
-      //   product_id: product.id,
-      //   quantity_gram: 100,
-      //   price_per_kg_at_purchase: product.price_per_kg
-      // })
-      await mqttAPI.publishMqttScale(product.id, {
+      await mqttAPI.publishMqttScale(productId, {
         timeout: import.meta.env.VITE_MQTT_TTL_SCALE + 2000
       })
       toast.success(t('Product added to cart!'))

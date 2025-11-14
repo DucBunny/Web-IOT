@@ -25,7 +25,7 @@ async function publishDetect(req, res) {
       ttl_ms: Number(process.env.MQTT_TTL_DETECT || 30000)
     })
 
-    return res.status(StatusCodes.OK).json({ received: received })
+    return res.status(StatusCodes.OK).json({ received })
   } catch (err) {
     console.error(err)
     return res
@@ -49,14 +49,14 @@ async function publishScale(req, res) {
     messages[1].fruit_name = product?.name_en
 
     const received = await subscribeOneShot({
-      fruitName: product?.name_en,
+      fruit_id: product_id,
       messages: [messages[1]],
       ttl_ms: Number(process.env.MQTT_TTL_SCALE || 15000)
     })
 
     messages[1].fruit_name = null
 
-    return res.status(StatusCodes.OK).json({ received: received, product_id })
+    return res.status(StatusCodes.OK).json({ received, product_id })
   } catch (err) {
     if (err instanceof ServiceError)
       return res.status(err.status).json({ error: err.message })

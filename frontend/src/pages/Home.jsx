@@ -173,7 +173,7 @@ export const Home = () => {
                 <Tooltip>
                   <TooltipTrigger
                     className="bg-custom-primary hover:bg-custom-primary-hover cursor-pointer rounded-md p-2 text-white"
-                    onClick={() => addToCart(product)}>
+                    onClick={() => addToCart(product.id)}>
                     <Plus />
                   </TooltipTrigger>
                   <TooltipContent>
