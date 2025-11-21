@@ -9,7 +9,7 @@ class MqttClient {
   }
 
   get url() {
-    const host = process.env.MQTT_BROKER || 'localhost'
+    const host = process.env.MQTT_BROKER || 'broker.emqx.io'
     const port = process.env.MQTT_PORT || '1883'
     return `mqtt://${host}:${port}`
   }

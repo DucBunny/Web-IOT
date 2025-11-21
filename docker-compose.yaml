@@ -1,0 +1,49 @@
+services:
+  mysql_db:
+    image: ducbunny/web-fruit-iot-db:latest
+    build:
+      context: ./docker/mysql
+      dockerfile: Dockerfile
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: web_fruit_iot
+    ports:
+      - '3307:3306'
+    expose:
+      - 3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    image: ducbunny/web-fruit-iot-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8081'
+    restart: always
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=mysql_db
+    volumes:
+      - ./backend/.env:/web-iot-store/backend/.env
+    depends_on:
+      - mysql_db
+    expose:
+      - 8081
+
+  frontend:
+    image: ducbunny/web-fruit-iot-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    restart: always
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
